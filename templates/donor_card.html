@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Digital Donor ID Card — {{ donor.name }} ({{ donor.donor_id }}){% endblock %}
+
+{% block content %}
+<section class="page-header-section no-print">
+    <div class="container">
+        <div class="card-status-pill">
+            <span class="status-indicator"></span> Active Community Donor
+        </div>
+        <h1 class="page-title">Digital Donor Identity Card</h1>
+        <p class="page-subtitle">Your official BloodConnect community pass. Keep this card handy or save a copy on your mobile device.</p>
+    </div>
+</section>
+
+<div class="container donor-card-page-container">
+    <div class="donor-card-wrapper">
+        <!-- Physical Style ID Card for Screen and Print -->
+        <div class="digital-id-card" id="digitalDonorCard">
+            <!-- Card Header -->
+            <div class="id-card-header">
+                <div class="id-card-brand">
+                    <span class="id-card-logo">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                        </svg>
+                    </span>
+                    <div>
+                        <div class="id-card-title">Blood<strong>Connect</strong></div>
+                        <div class="id-card-subtitle">College Community Donor Pass</div>
+                    </div>
+                </div>
+                <div class="id-card-blood-badge">
+                    {{ donor.blood_group }}
+                </div>
+            </div>
+
+            <!-- Card Body: Grid of Donor Details & QR Code -->
+            <div class="id-card-body">
+                <div class="id-card-details">
+                    <div class="id-field">
+                        <span class="id-label">Donor Name</span>
+                        <span class="id-value name-value">{{ donor.name }}</span>
+                    </div>
+
+                    <div class="id-field-row">
+                        <div class="id-field flex-1">
+                            <span class="id-label">Donor ID</span>
+                            <span class="id-value mono-id">{{ donor.donor_id }}</span>
+                        </div>
+                        <div class="id-field flex-1">
+                            <span class="id-label">City / Campus</span>
+                            <span class="id-value">{{ donor.city }}</span>
+                        </div>
+                    </div>
+
+                    <div class="id-field-row">
+                        <div class="id-field flex-1">
+                            <span class="id-label">Phone (Protected)</span>
+                            <span class="id-value phone-masked">{{ masked_phone }}</span>
+                        </div>
+                        <div class="id-field flex-1">
+                            <span class="id-label">Issue Date</span>
+                            <span class="id-value">{{ donor.created_at[:10] if donor.created_at else '2026' }}</span>
+                        </div>
+                    </div>
+
+                    <div class="id-card-verified-strip">
+                        <span class="verify-icon">✓</span>
+                        <span>Registered Volunteer Donor &bull; Valid across Campus Health Drives</span>
+                    </div>
+                </div>
+
+                <!-- QR Code Box -->
+                <div class="id-card-qr-box">
+                    <div class="qr-image-frame">
+                        <img 
+                            src="{{ url_for('donor_qr_image', token=donor.qr_token) }}" 
+                            alt="QR code for {{ donor.name }} profile verification" 
+                            width="140" 
+                            height="140"
+                        >
+                    </div>
+                    <span class="qr-scan-label">Scan to Verify</span>
+                    <span class="qr-token-note">Secure Token Only &bull; Zero PII Embedded</span>
+                </div>
+            </div>
+
+            <!-- Card Footer -->
+            <div class="id-card-footer">
+                <p>Non-transferable community health ID. Authorized hospital staff scan QR to verify eligibility and log donations.</p>
+            </div>
+        </div>
+
+        <!-- Action Toolbar (Hidden during print) -->
+        <div class="card-action-toolbar no-print">
+            <button class="btn btn-primary" onclick="window.print();" id="printCardBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                    <rect x="6" y="14" width="12" height="8"></rect>
+                </svg>
+                <span>Print or Save as PDF</span>
+            </button>
+
+            <a href="{{ profile_url or url_for('donor_profile', token=donor.qr_token) }}" class="btn btn-outline" target="_blank" id="viewProfileBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+                <span>Preview Public QR Profile</span>
+            </a>
+
+            <a href="{{ url_for('become_donor') }}" class="btn btn-outline">
+                Register Another Donor
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

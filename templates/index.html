@@ -1,0 +1,312 @@
+{% extends "base.html" %}
+
+{% block title %}BloodConnect — Blood Donor and Emergency Blood Availability Portal{% endblock %}
+
+{% block content %}
+<!-- Hero Section with Blood Search -->
+<section class="hero-section">
+    <div class="container hero-container">
+        <div class="hero-content">
+            <span class="hero-tag">Direct • Community-Driven • Life-Saving</span>
+            <h1 class="hero-title">
+                Find Compatible Blood Donors &amp; Emergency Reserves in Seconds
+            </h1>
+            <p class="hero-subtitle">
+                Connecting campus volunteers, verified local blood banks, and patients in urgent need. Safe, transparent, and completely free.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="#search-card" class="btn btn-primary">Find Blood Now</a>
+                <a href="{{ url_for('become_donor') }}" class="btn btn-outline">Join as a Donor</a>
+            </div>
+
+            <div class="trust-indicators">
+                <div class="trust-item">
+                    <span class="trust-icon">✓</span>
+                    <span>Verified Hospital Centers</span>
+                </div>
+                <div class="trust-item">
+                    <span class="trust-icon">✓</span>
+                    <span>Digital QR Donor Cards</span>
+                </div>
+                <div class="trust-item">
+                    <span class="trust-icon">✓</span>
+                    <span>Zero Commercial Intermediaries</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blood Search Card Form -->
+        <div class="hero-card-wrapper" id="search-card">
+            <div class="search-card">
+                <div class="search-card-header">
+                    <div class="card-icon-badge">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="search-card-title">Instant Blood Search</h2>
+                        <p class="search-card-sub">Check live stock &amp; available community donors</p>
+                    </div>
+                </div>
+
+                <form action="{{ url_for('find_blood') }}" method="GET" class="blood-search-form" id="bloodSearchForm">
+                    <!-- Blood Group Select -->
+                    <div class="form-group">
+                        <label for="blood_group" class="form-label">
+                            Blood Group <span class="required">*</span>
+                        </label>
+                        <div class="input-icon-wrapper">
+                            <select id="blood_group" name="blood_group" class="form-control" required>
+                                <option value="" disabled selected>Select Blood Group</option>
+                                <option value="A+">A+ (A Positive)</option>
+                                <option value="A-">A- (A Negative)</option>
+                                <option value="B+">B+ (B Positive)</option>
+                                <option value="B-">B- (B Negative)</option>
+                                <option value="AB+">AB+ (AB Positive)</option>
+                                <option value="AB-">AB- (AB Negative)</option>
+                                <option value="O+">O+ (O Positive)</option>
+                                <option value="O-">O- (O Negative)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- City Input -->
+                    <div class="form-group">
+                        <label for="city" class="form-label">
+                            City / Campus Location <span class="required">*</span>
+                        </label>
+                        <div class="input-icon-wrapper">
+                            <input 
+                                type="text" 
+                                id="city" 
+                                name="city" 
+                                class="form-control" 
+                                placeholder="e.g. Mumbai, Pune, Delhi, Bengaluru" 
+                                required
+                            >
+                        </div>
+                        <div class="quick-chips" aria-label="Suggested Cities">
+                            <span class="chip-label">Suggestions:</span>
+                            <button type="button" class="city-chip" data-city="Mumbai">Mumbai</button>
+                            <button type="button" class="city-chip" data-city="Delhi">Delhi</button>
+                            <button type="button" class="city-chip" data-city="Bengaluru">Bengaluru</button>
+                            <button type="button" class="city-chip" data-city="Pune">Pune</button>
+                        </div>
+                    </div>
+
+                    <!-- Units Required -->
+                    <div class="form-group">
+                        <label for="units" class="form-label">
+                            Units Required <span class="text-muted">(Pints)</span>
+                        </label>
+                        <div class="input-icon-wrapper">
+                            <input 
+                                type="number" 
+                                id="units" 
+                                name="units" 
+                                class="form-control" 
+                                value="1" 
+                                min="1" 
+                                max="10" 
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block search-submit-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <span>Search Blood Availability</span>
+                    </button>
+                </form>
+
+                <p class="search-card-footer">
+                    🔒 Free emergency service for patients and healthcare partners.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Impact Counters Section -->
+<section class="stats-section">
+    <div class="container stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">1,240+</div>
+            <div class="stat-label">Registered Donors</div>
+            <p class="stat-sub">Ready volunteer students &amp; staff</p>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">48</div>
+            <div class="stat-label">Partner Blood Banks</div>
+            <p class="stat-sub">Connected regional hospitals</p>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">3,120+</div>
+            <div class="stat-label">Donation Units</div>
+            <p class="stat-sub">Lives impacted across communities</p>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">&lt; 15 min</div>
+            <div class="stat-label">Average Match Time</div>
+            <p class="stat-sub">For critical emergency alerts</p>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works-section">
+    <div class="container">
+        <div class="section-header text-center">
+            <span class="section-tag">Simple &amp; Fast</span>
+            <h2 class="section-title">How BloodConnect Works</h2>
+            <p class="section-desc">
+                An organized 3-step workflow designed to save time when every second counts.
+            </p>
+        </div>
+
+        <div class="workflow-grid">
+            <div class="workflow-card">
+                <div class="step-badge">Step 1</div>
+                <div class="workflow-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </div>
+                <h3 class="workflow-title">Search or Request</h3>
+                <p class="workflow-text">
+                    Enter the needed blood group, city or college location to find immediately available units or broadcast an emergency distress call.
+                </p>
+            </div>
+
+            <div class="workflow-card highlight-card">
+                <div class="step-badge">Step 2</div>
+                <div class="workflow-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                </div>
+                <h3 class="workflow-title">Match Compatible Donors</h3>
+                <p class="workflow-text">
+                    The platform filters matching donors based on medical compatibility, current availability, and proximity, protecting personal data.
+                </p>
+            </div>
+
+            <div class="workflow-card">
+                <div class="step-badge">Step 3</div>
+                <div class="workflow-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                </div>
+                <h3 class="workflow-title">Donate &amp; Verify with QR</h3>
+                <p class="workflow-text">
+                    Donors present their Digital ID card. Hospital staff scan the QR code to log and verify the donation, keeping records 100% genuine.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Blood Compatibility Chart -->
+<section class="compatibility-section">
+    <div class="container">
+        <div class="compatibility-box">
+            <div class="compatibility-info">
+                <span class="section-tag">Quick Medical Guide</span>
+                <h2 class="section-title">Blood Group Compatibility Quick Guide</h2>
+                <p class="section-desc">
+                    Understanding who can receive your blood can help you respond accurately during urgent calls.
+                </p>
+                <div class="fact-pill">
+                    💡 <strong>O-Negative</strong> is the universal red cell donor, and <strong>AB-Positive</strong> is the universal recipient.
+                </div>
+            </div>
+
+            <div class="compatibility-table-wrapper">
+                <table class="compatibility-table" aria-label="Blood Group Compatibility Table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Blood Group</th>
+                            <th scope="col">Can Donate To</th>
+                            <th scope="col">Can Receive From</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="blood-badge">O-</span></td>
+                            <td>All blood groups (Universal)</td>
+                            <td>O- only</td>
+                        </tr>
+                        <tr>
+                            <td><span class="blood-badge">O+</span></td>
+                            <td>O+, A+, B+, AB+</td>
+                            <td>O+, O-</td>
+                        </tr>
+                        <tr>
+                            <td><span class="blood-badge">A-</span></td>
+                            <td>A-, A+, AB-, AB+</td>
+                            <td>A-, O-</td>
+                        </tr>
+                        <tr>
+                            <td><span class="blood-badge">A+</span></td>
+                            <td>A+, AB+</td>
+                            <td>A+, A-, O+, O-</td>
+                        </tr>
+                        <tr>
+                            <td><span class="blood-badge">B-</span></td>
+                            <td>B-, B+, AB-, AB+</td>
+                            <td>B-, O-</td>
+                        </tr>
+                        <tr>
+                            <td><span class="blood-badge">B+</span></td>
+                            <td>B+, AB+</td>
+                            <td>B+, B-, O+, O-</td>
+                        </tr>
+                        <tr>
+                            <td><span class="blood-badge">AB-</span></td>
+                            <td>AB-, AB+</td>
+                            <td>AB-, A-, B-, O-</td>
+                        </tr>
+                        <tr>
+                            <td><span class="blood-badge">AB+</span></td>
+                            <td>AB+ only</td>
+                            <td>All blood groups (Universal)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Banner -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-card">
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to Save Someone’s Life?</h2>
+                <p class="cta-subtitle">
+                    Registering takes less than 2 minutes. Get your verified Digital Donor Card with personalized QR access today.
+                </p>
+            </div>
+            <div class="cta-actions">
+                <a href="{{ url_for('become_donor') }}" class="btn btn-white btn-lg">Register as Donor</a>
+                <a href="{{ url_for('find_blood') }}" class="btn btn-outline-white btn-lg">Search Blood</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

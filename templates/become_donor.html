@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}Become a Donor — BloodConnect Registration{% endblock %}
+
+{% block content %}
+<section class="page-header-section">
+    <div class="container">
+        <h1 class="page-title">Become a Volunteer Blood Donor</h1>
+        <p class="page-subtitle">Register in the college community database to receive your verified Digital Donor Card with QR access</p>
+    </div>
+</section>
+
+<div class="container page-content-container">
+    <div class="two-col-layout">
+        <!-- Feature Highlights & Privacy Commitment -->
+        <div class="feature-info-card">
+            <h2>Your Digital Donor Pass</h2>
+            <p>
+                Every registration creates a secure, verifiable record in our local community database. Here is how your donor pass works:
+            </p>
+
+            <ul class="benefit-list">
+                <li>
+                    <strong>🪪 Digital Donor ID Card:</strong> Generates a unique Donor ID (e.g., <code>BC-2026-XXXX</code>) showing your blood group, city, and a dedicated digital badge.
+                </li>
+                <li>
+                    <strong>📲 Unpredictable QR Profile Token:</strong> The generated QR code points only to your public verification token URL. <em>No personal contact information or email is ever encoded inside the QR image.</em>
+                </li>
+                <li>
+                    <strong>🛡️ Contact Privacy Masking:</strong> Your phone number is masked (e.g. <code>+91 98*****210</code>) on all public screens to protect you against spam and unsolicited calls.
+                </li>
+                <li>
+                    <strong>💉 Genuine Donation History:</strong> Donation records cannot be self-submitted or fabricated. They can only be recorded and stamped verified by authorized hospital blood bank staff.
+                </li>
+            </ul>
+
+            <div class="callout-box">
+                <h4>Medical Eligibility Criteria</h4>
+                <p>
+                    Volunteers must be between <strong>18 and 65 years old</strong>, weigh at least 45 kg, and be in general good health.
+                </p>
+            </div>
+        </div>
+
+        <!-- Functional Donor Registration Form -->
+        <div class="form-preview-card">
+            <h3>Donor Registration</h3>
+            <p class="text-muted">Fill out the details below. Required fields are marked with <span class="required">*</span>.</p>
+
+            {% if error %}
+            <div class="alert alert-danger" role="alert">
+                <span>{{ error }}</span>
+            </div>
+            {% endif %}
+
+            <form action="{{ url_for('become_donor') }}" method="POST" class="donor-reg-form" id="donorRegForm">
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label for="name" class="form-label">Full Name <span class="required">*</span></label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        class="form-control" 
+                        placeholder="e.g. Rahul Sharma" 
+                        value="{{ form_data.name if form_data else '' }}" 
+                        required 
+                        minlength="2"
+                        maxlength="80"
+                    >
+                </div>
+
+                <!-- Blood Group & Age -->
+                <div class="form-row">
+                    <div class="form-group flex-1">
+                        <label for="blood_group" class="form-label">Blood Group <span class="required">*</span></label>
+                        <select id="blood_group" name="blood_group" class="form-control" required>
+                            <option value="" disabled {% if not form_data or not form_data.blood_group %}selected{% endif %}>Select</option>
+                            {% for bg in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
+                            <option value="{{ bg }}" {% if form_data and form_data.blood_group == bg %}selected{% endif %}>{{ bg }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group flex-1">
+                        <label for="age" class="form-label">Age (18-65) <span class="required">*</span></label>
+                        <input 
+                            type="number" 
+                            id="age" 
+                            name="age" 
+                            class="form-control" 
+                            placeholder="18-65" 
+                            value="{{ form_data.age if form_data else '' }}" 
+                            min="18" 
+                            max="65" 
+                            required
+                        >
+                    </div>
+                </div>
+
+                <!-- City / Campus Location -->
+                <div class="form-group">
+                    <label for="city" class="form-label">City / Campus Location <span class="required">*</span></label>
+                    <input 
+                        type="text" 
+                        id="city" 
+                        name="city" 
+                        class="form-control" 
+                        placeholder="e.g. Mumbai, Pune, North Campus" 
+                        value="{{ form_data.city if form_data else '' }}" 
+                        required 
+                        minlength="2"
+                    >
+                </div>
+
+                <!-- Phone (Protected) -->
+                <div class="form-group">
+                    <label for="phone" class="form-label">
+                        Contact Phone <span class="required">*</span> 
+                        <span class="text-muted">(Masked on public pages)</span>
+                    </label>
+                    <input 
+                        type="tel" 
+                        id="phone" 
+                        name="phone" 
+                        class="form-control" 
+                        placeholder="e.g. 9876543210 or +91 9876543210" 
+                        value="{{ form_data.phone if form_data else '' }}" 
+                        required
+                    >
+                </div>
+
+                <!-- Email Address -->
+                <div class="form-group">
+                    <label for="email" class="form-label">
+                        Email Address <span class="required">*</span> 
+                        <span class="text-muted">(Kept strictly private)</span>
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-control" 
+                        placeholder="name@college.edu" 
+                        value="{{ form_data.email if form_data else '' }}" 
+                        required
+                    >
+                </div>
+
+                <!-- Optional Account Password -->
+                <div class="form-group">
+                    <label for="password" class="form-label">
+                        Create Account Password <span class="text-muted">(Optional for portal sign-in)</span>
+                    </label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-control" 
+                        placeholder="Minimum 6 characters" 
+                        minlength="6"
+                    >
+                    <small class="form-text-hint">Passwords are securely hashed before storage in SQLite.</small>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" id="submitDonorBtn">
+                    Register &amp; Generate Digital ID Card
+                </button>
+            </form>
+
+            <div class="privacy-guarantee">
+                🔒 Protected by BloodConnect Community Privacy Shield.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

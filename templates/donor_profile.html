@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Donor Profile — Verified Community Pass ({{ donor.donor_id }}){% endblock %}
+
+{% block content %}
+<section class="page-header-section">
+    <div class="container text-center">
+        <div class="verified-qr-banner">
+            <span class="status-indicator"></span> Verified BloodConnect Community Profile
+        </div>
+        <h1 class="page-title">Donor Profile Verification</h1>
+        <p class="page-subtitle">Authentic volunteer donor record confirmed via secure QR token</p>
+    </div>
+</section>
+
+<div class="container page-content-container">
+    <div class="public-profile-card">
+        <!-- Top Status Bar -->
+        <div class="profile-header-strip">
+            <div class="profile-badge-left">
+                <span class="profile-blood-badge">{{ donor.blood_group }}</span>
+                <div>
+                    <h2 class="profile-name">{{ donor.name }}</h2>
+                    <span class="profile-donor-id">ID: <strong>{{ donor.donor_id }}</strong></span>
+                </div>
+            </div>
+            <div class="profile-status-right">
+                <span class="badge badge-success">✓ Active Registered Donor</span>
+            </div>
+        </div>
+
+        <!-- Approved Public Fields Only -->
+        <div class="profile-fields-grid">
+            <div class="profile-field-box">
+                <span class="field-title">Blood Group</span>
+                <span class="field-detail text-danger font-weight-bold">{{ donor.blood_group }}</span>
+            </div>
+
+            <div class="profile-field-box">
+                <span class="field-title">City / Campus Location</span>
+                <span class="field-detail">{{ donor.city }}</span>
+            </div>
+
+            <div class="profile-field-box">
+                <span class="field-title">Registration Status</span>
+                <span class="field-detail text-success">Active Community Volunteer</span>
+            </div>
+
+            <div class="profile-field-box">
+                <span class="field-title">Member Since</span>
+                <span class="field-detail">{{ donor.created_at[:10] if donor.created_at else '2026' }}</span>
+            </div>
+        </div>
+
+        <!-- Privacy Shield Notice -->
+        <div class="privacy-shield-banner">
+            <div class="shield-icon">🛡️</div>
+            <div>
+                <h4>BloodConnect Community Privacy Guarantee</h4>
+                <p>
+                    In accordance with patient and donor privacy standards, <strong>email addresses, full personal phone numbers, and individual clinical donation histories are strictly protected from public access</strong>.
+                </p>
+                <p class="shield-sub">
+                    Authorized hospital and blood bank clinicians must authenticate through the staff portal to verify donor eligibility and log official units.
+                </p>
+            </div>
+        </div>
+
+        <!-- Action Options -->
+        <div class="profile-actions-strip">
+            <a href="{{ url_for('home') }}" class="btn btn-outline">Back to Home</a>
+            <a href="{{ url_for('find_blood') }}" class="btn btn-outline">Search Blood Availability</a>
+            <a href="{{ url_for('become_donor') }}" class="btn btn-primary">Become a Donor Too</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

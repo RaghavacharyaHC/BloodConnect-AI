@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BloodConnect — College Community Blood Donor and Emergency Blood Availability Portal. Connect with verified donors and hospital blood banks quickly.">
+    <title>{% block title %}BloodConnect — Blood Donor & Emergency Portal{% endblock %}</title>
+    
+    <!-- Google Fonts: Outfit and Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Accessibility Skip Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Top Emergency Announcement Bar -->
+    <aside class="emergency-bar" aria-label="Emergency Announcement">
+        <div class="container emergency-bar-inner">
+            <span class="emergency-badge">URGENT</span>
+            <p class="emergency-text">
+                Need urgent blood assistance? Call 24/7 Helpline: <strong>+91 1800-BLOOD-HELP</strong> or submit an emergency request.
+            </p>
+            <a href="{{ url_for('find_blood') }}" class="emergency-link">Find Blood Immediately &rarr;</a>
+        </div>
+    </aside>
+
+    <!-- Header Navigation -->
+    <header class="site-header">
+        <div class="container navbar">
+            <a href="{{ url_for('home') }}" class="brand" aria-label="BloodConnect Home">
+                <span class="brand-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                    </svg>
+                </span>
+                <span class="brand-name">Blood<strong>Connect</strong></span>
+            </a>
+
+            <!-- Mobile Hamburger Button -->
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+                <span class="hamburger-bar"></span>
+            </button>
+
+            <!-- Nav Links -->
+            <nav class="nav-menu" id="navMenu" aria-label="Main Navigation">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="{{ url_for('home') }}" class="nav-link {% if request.endpoint == 'home' %}active{% endif %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('find_blood') }}" class="nav-link {% if request.endpoint == 'find_blood' %}active{% endif %}">Find Blood</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('become_donor') }}" class="nav-link {% if request.endpoint == 'become_donor' %}active{% endif %}">Become a Donor</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('login') }}" class="nav-link {% if request.endpoint == 'login' %}active{% endif %}">Login</a>
+                    </li>
+                </ul>
+                <div class="nav-actions">
+                    <a href="{{ url_for('become_donor') }}" class="btn btn-primary btn-sm">Register as Donor</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="container flash-container">
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category if category != 'error' else 'danger' }}" role="alert">
+                    <span>{{ message }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <div class="footer-col brand-col">
+                <div class="footer-brand">
+                    <span class="brand-icon small">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                        </svg>
+                    </span>
+                    <span class="brand-name">Blood<strong>Connect</strong></span>
+                </div>
+                <p class="footer-desc">
+                    A college community initiative bridging the gap between volunteer blood donors, emergency patients, and verified hospital blood reserves.
+                </p>
+                <div class="community-pill">
+                    🎓 Student &amp; Community Health Initiative
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h2 class="footer-heading">Quick Links</h2>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('find_blood') }}">Find Blood Availability</a></li>
+                    <li><a href="{{ url_for('become_donor') }}">Become a Volunteer Donor</a></li>
+                    <li><a href="{{ url_for('login') }}">Portal Login</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h2 class="footer-heading">User Roles</h2>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('login') }}">Volunteer Donor</a></li>
+                    <li><a href="{{ url_for('login') }}">Patient &amp; Attendant</a></li>
+                    <li><a href="{{ url_for('login') }}">Hospital Blood Bank</a></li>
+                    <li><a href="{{ url_for('login') }}">Administrator</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h2 class="footer-heading">Emergency &amp; Support</h2>
+                <p class="footer-contact-item"><strong>24/7 Helpline:</strong> +91 1800-BLOOD-HELP</p>
+                <p class="footer-contact-item"><strong>Campus Clinic:</strong> ext 4092</p>
+                <p class="footer-contact-item"><strong>Email:</strong> help@bloodconnect.local</p>
+                <p class="health-status-badge">
+                    <span class="status-indicator"></span> System Online (<a href="{{ url_for('health_check') }}" target="_blank">Health Check API</a>)
+                </p>
+            </div>
+        </div>
+
+        <div class="container footer-bottom">
+            <p>&copy; 2026 BloodConnect Portal. Built for college community blood donation and emergency availability.</p>
+            <p class="footer-motto">Give Blood, Save Lives &bull; Every Drop Counts</p>
+        </div>
+    </footer>
+
+    <!-- Vanilla JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

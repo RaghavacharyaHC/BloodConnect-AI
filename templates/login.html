@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Portal Login — BloodConnect{% endblock %}
+
+{% block content %}
+<section class="page-header-section">
+    <div class="container">
+        <h1 class="page-title">BloodConnect Portal Login</h1>
+        <p class="page-subtitle">Select your account role to access your dedicated portal dashboard</p>
+    </div>
+</section>
+
+<div class="container page-content-container">
+    <div class="roles-grid">
+        <!-- Role 1: Donor -->
+        <div class="role-card">
+            <div class="role-icon-box">🩸</div>
+            <h3 class="role-title">Volunteer Donor</h3>
+            <p class="role-desc">
+                Access your digital donor ID card, QR verification badge, and check your registered blood profile.
+            </p>
+            <span class="role-badge">Role: Donor</span>
+        </div>
+
+        <!-- Role 2: Patient/Attendant -->
+        <div class="role-card">
+            <div class="role-icon-box">🏥</div>
+            <h3 class="role-title">Patient / Attendant</h3>
+            <p class="role-desc">
+                Search compatible blood units across regional blood banks and campus health reserves.
+            </p>
+            <span class="role-badge">Role: Patient</span>
+        </div>
+
+        <!-- Role 3: Hospital / Blood Bank Staff -->
+        <div class="role-card">
+            <div class="role-icon-box">💉</div>
+            <h3 class="role-title">Hospital Blood Bank</h3>
+            <p class="role-desc">
+                Authorized clinicians authenticate to verify donor attendance and log genuine donation records.
+            </p>
+            <span class="role-badge">Role: Hospital Staff</span>
+        </div>
+
+        <!-- Role 4: Administrator -->
+        <div class="role-card">
+            <div class="role-icon-box">⚙️</div>
+            <h3 class="role-title">Administrator</h3>
+            <p class="role-desc">
+                System administration and verification auditing across college chapters.
+            </p>
+            <span class="role-badge">Role: Admin</span>
+        </div>
+    </div>
+
+    <!-- Active Login Form -->
+    <div class="login-box-wrapper">
+        <div class="login-box">
+            <div class="login-box-header">
+                <h3>Sign In to BloodConnect</h3>
+                <p class="text-muted">Secure password authentication with SQLite persistence</p>
+            </div>
+
+            {% if error %}
+            <div class="alert alert-danger" role="alert">
+                <span>{{ error }}</span>
+            </div>
+            {% endif %}
+
+            <form action="{{ url_for('login') }}" method="POST" id="portalLoginForm">
+                <div class="form-group">
+                    <label for="login_role" class="form-label">Select Role</label>
+                    <select id="login_role" name="role" class="form-control" required>
+                        <option value="donor" {% if role == 'donor' or not role %}selected{% endif %}>Volunteer Donor</option>
+                        <option value="hospital" {% if role == 'hospital' %}selected{% endif %}>Hospital / Blood Bank Staff</option>
+                        <option value="patient" {% if role == 'patient' %}selected{% endif %}>Patient / Attendant</option>
+                        <option value="admin" {% if role == 'admin' %}selected{% endif %}>System Administrator</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="login_email" class="form-label">Registered Email</label>
+                    <input 
+                        type="email" 
+                        id="login_email" 
+                        name="email" 
+                        class="form-control" 
+                        placeholder="e.g. donor@college.edu or staff@hospital.org" 
+                        value="{{ email or '' }}" 
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="login_password" class="form-label">Password</label>
+                    <input 
+                        type="password" 
+                        id="login_password" 
+                        name="password" 
+                        class="form-control" 
+                        placeholder="••••••••" 
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" id="loginSubmitBtn">
+                    Sign In
+                </button>
+            </form>
+
+            <div class="login-footer-links">
+                <a href="{{ url_for('become_donor') }}">New donor? Register here</a>
+                <span>&bull;</span>
+                <a href="{{ url_for('home') }}">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
